@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FaceID Attendance System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      FACEID · ATTENDANCE OS
+    </div>
+    <div class="topbar-right">
+      <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+      <span class="chip chip-g" id="cam-chip">CAM 01 — INACTIVE</span>
+      <span class="chip chip-b" id="clock">00:00:00</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- LEFT: Camera + Stats -->
+    <div class="left">
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">ENROLLED</div>
+          <div class="stat-val accent" id="stat-enrolled">—</div>
+          <div class="stat-sub">registered faces</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">PRESENT</div>
+          <div class="stat-val green" id="stat-present">0</div>
+          <div class="stat-sub">checked in today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">LATE</div>
+          <div class="stat-val amber" id="stat-late">0</div>
+          <div class="stat-sub">after 9:00 AM</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">DATE</div>
+          <div class="stat-val accent" id="stat-date" style="font-size:14px">—</div>
+          <div class="stat-sub">today's session</div>
+        </div>
+      </div>
+
+      <!-- Camera Feed -->
+      <div class="cam-wrap">
+        <img id="video-feed" src="" alt="Camera Feed" style="display:none">
+        <div id="cam-placeholder" class="cam-placeholder">
+          <span>[ CAMERA FEED INACTIVE ]</span>
+          <small>Press START SCAN to begin</small>
+        </div>
+        <div class="cam-overlay">
+          <div class="scan-line" id="scan-line" style="display:none"></div>
+          <div class="corner c-tl"></div><div class="corner c-tr"></div>
+          <div class="corner c-bl"></div><div class="corner c-br"></div>
+          <div class="cam-status" id="cam-status">IDLE</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn btn-primary" id="btn-scan">▶ START SCAN</button>
+        <button class="btn btn-ghost" id="btn-register" onclick="toggleRegister()">+ REGISTER FACE</button>
+        <a class="btn btn-ghost" href="/export">⬇ EXPORT CSV</a>
+      </div>
+
+      <!-- Register Panel -->
+      <div class="register-panel" id="register-panel" style="display:none">
+        <div class="section-title">REGISTER NEW FACE</div>
+        <div class="reg-form">
+          <input type="text" id="reg-name" placeholder="Full Name (e.g. Arjun Mehta)" class="reg-input">
+          <input type="file" id="reg-image" accept="image/*" class="reg-input">
+          <button class="btn btn-primary" onclick="registerFace()">REGISTER</button>
+        </div>
+        <div id="reg-msg" class="reg-msg"></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Log + Roster -->
+    <div class="right">
+      <div class="panel-tabs">
+        <div class="tab active" id="t-log" onclick="switchTab('log')">LIVE LOG</div>
+        <div class="tab" id="t-roster" onclick="switchTab('roster')">ROSTER</div>
+      </div>
+      <div class="panel-body" id="panel-body">
+        <div class="section-title">RECOGNITION EVENTS</div>
+        <div id="log-list">
+          <div class="empty-state">No events yet. Start scanning.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
